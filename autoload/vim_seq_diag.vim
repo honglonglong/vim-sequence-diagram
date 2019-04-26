@@ -12,15 +12,25 @@ function! vim_seq_diag#Generate_diagram(pluginPath)
     let tmpDir = g:generate_diagram_tmp_dir
   endif
   
-  call system("mkdir " . tmpDir)
   "TODO check file already exists?
-  call system("cp " . a:pluginPath . '/underscore-min.js' . " " . tmpDir)
-  call system("cp " . a:pluginPath . '/raphael-min.js' . " " . tmpDir)
-  call system("cp " . a:pluginPath . '/sequence-diagram-min.js' . " " . tmpDir)
-  call system("cp " . a:pluginPath . '/browser.min.js' . " " . tmpDir)
+  let copycommand = "cp "
+  let pluginPath = a:pluginPath . '/'
+  if has("windows")
+	let copycommand = "copy /Y "
+	let pluginPath = a:pluginPath . '\'
+	let tmpDir = substitute(tmpDir, '/', '\', 'g')
+	let tmpl = substitute(tmpl, '/', '\', 'g')
+    call system("md " . tmpDir)
+  else
+    call system("mkdir " . tmpDir)
+  endif
+  call system(copycommand . pluginPath . 'underscore-min.js' . " " . tmpDir)
+  call system(copycommand . pluginPath . 'raphael-min.js' . " " . tmpDir)
+  call system(copycommand . pluginPath . 'sequence-diagram-min.js' . " " . tmpDir)
+  call system(copycommand . pluginPath . 'browser.min.js' . " " . tmpDir)
 
   let out = tmpDir . "out.html"
-  call system("cp " . tmpl . " " . out)
+  call system(copycommand . tmpl . " " . out)
 
   let originTab = tabpagenr()
   execute "tabe " . out
@@ -38,8 +48,9 @@ function! vim_seq_diag#Generate_diagram(pluginPath)
 
   if has('mac')
     call system("osascript " . a:pluginPath . '/applescript/active.scpt')
+  elseif has("windows")
+	echo "HTML file generated in: " . out
   else
     call system("xdg-open " . out)
   endif
 endfunction
-
