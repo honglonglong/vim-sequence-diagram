@@ -49,6 +49,12 @@ You can add the following line into your vimrc for using `hand drawn` theme, set
 ```
 let g:generate_diagram_theme_hand = 1
 ```
+
+### Change output folder
+By default, the generated HTML files will be in /tmp/vim-js-seq/, if want to change this, can add the followign line into your vimrc.
+```
+let g:generate_diagram_tmp_dir = './output/'
+```
 ### Download as SVG or PNG
 Use the buttons at the bottom to download the diagram as SVG or PNG.
 
