@@ -12,7 +12,6 @@ function! vim_seq_diag#Generate_diagram(pluginPath)
     let tmpDir = g:generate_diagram_tmp_dir
   endif
   
-  call system("mkdir " . tmpDir)
   "TODO check file already exists?
   let copycommand = "cp "
   let pluginPath = a:pluginPath . '/'
@@ -21,6 +20,9 @@ function! vim_seq_diag#Generate_diagram(pluginPath)
 	let pluginPath = a:pluginPath . '\'
 	let tmpDir = substitute(tmpDir, '/', '\', 'g')
 	let tmpl = substitute(tmpl, '/', '\', 'g')
+    call system("md " . tmpDir)
+  else
+    call system("mkdir " . tmpDir)
   endif
   call system(copycommand . pluginPath . 'underscore-min.js' . " " . tmpDir)
   call system(copycommand . pluginPath . 'raphael-min.js' . " " . tmpDir)
