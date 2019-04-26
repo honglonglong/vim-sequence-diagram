@@ -8,6 +8,10 @@ function! vim_seq_diag#Generate_diagram(pluginPath)
 
   let tmpl = a:pluginPath . '/tmpl.html'
   let tmpDir = "/tmp/vim-js-seq/"
+  if exists("g:generate_diagram_tmp_dir")
+    let tmpDir = g:generate_diagram_tmp_dir
+  endif
+  
   call system("mkdir " . tmpDir)
   "TODO check file already exists?
   call system("cp " . a:pluginPath . '/underscore-min.js' . " " . tmpDir)
